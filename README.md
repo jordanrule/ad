@@ -1,6 +1,6 @@
 # Automatic Differentiation Done Three Ways in Go
 
-The most rewarding open source experience of my career has been getting a design review on some automatic differentiation code I submitted to [Sebastien Binet](https://github.com/sbinet) at [CERN](https://home.cern/).  For years of my career, I had been using Go as the typed cryptographic shell to build machine learning infrastructure within.  This was fine for the operations research oriented work we were doing at the time, but Go is simply not an expressive enough language to act as a shell for the multi-modal nature of modern machine learning (where Haskell/Scala are better suited, IMO).  I finally feel prepared to submit back to the community what I learned from that design review: AD done three ways in Go with an MIT license.
+The most rewarding open source experience of my career has been getting a design review on some automatic differentiation code I submitted to [Sebastien Binet](https://github.com/sbinet) at [CERN](https://home.cern/).  For years of my career, I had been using Go as the typed cryptographic shell to build machine learning infrastructure within.  This was fine for the operations research oriented work we were doing at the time, but Go is simply not an expressive enough language to act as a shell for the multimodal nature of modern machine learning (where Haskell/Scala are better suited, IMO).  I finally feel prepared to submit back to the community what I learned from that design review: AD done three ways in Go with an MIT license.
 
 ## Three Approaches
 
