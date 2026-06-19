@@ -1,6 +1,6 @@
 # Automatic Differentiation Done Three Ways in Go
 
-The most rewarding open source experience of my career was receiving a design review on automatic differentiation code I submitted to [Sebastien Binet](https://github.com/sbinet) at [CERN](https://home.cern/). For many years, I built security software in Go while most of my day-to-day work focused on operations research and machine learning infrastructure. That worked well for the systems we were building at the time, but Go is not as expressive for the multi-modal nature of modern machine learning (where Haskell/Scala are better suited, in my opinion). Meanwhile, parts of our Python stack aged over time because we did not have the capacity to keep up with ongoing security patching. I now feel ready to share with the community what I learned from that design review: AD done three ways in Go under an MIT license.
+The most rewarding open source moment of my career was receiving a design review on automatic differentiation code I submitted to [Sebastien Binet](https://github.com/sbinet) at [CERN](https://home.cern/). I spent years building security software in Go while most of my day-to-day work focused on operations research and machine learning infrastructure, and that combination shaped this project. This repository distills what I learned into three practical approaches to AD in Go, released under an MIT license.
 
 ## Three Approaches
 
