@@ -1,6 +1,6 @@
 # Automatic Differentiation Done Three Ways in Go
 
-The most rewarding open source moment of my career was receiving a design review on automatic differentiation code I submitted to [Sebastien Binet](https://github.com/sbinet) at [CERN](https://home.cern/). I spent years building security software in Go while most of my day-to-day work focused on operations research and machine learning infrastructure, and that combination shaped this project. This repository distills what I learned into three practical approaches to AD in Go, released under an MIT license.
+The most rewarding open source moment of my career was receiving a design review on automatic differentiation code I submitted to [Sebastien Binet](https://github.com/sbinet) at [CERN](https://home.cern/). I spent years building security software in Go while most of my day-to-day work focused on operations research and machine learning infrastructure, and that combination shaped this project. This repository distills what I learned into three practical approaches to AD in Go, released under a BSD 2-Clause license.
 
 ## Three Approaches
 
@@ -34,4 +34,4 @@ go run ./cmd/demo
 
 ## License
 
-MIT
+BSD 2-Clause

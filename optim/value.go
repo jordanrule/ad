@@ -6,7 +6,10 @@
 // satisfaction).
 package optim
 
-import "math"
+import (
+	"math"
+	"sync/atomic"
+)
 
 // Value represents a differentiable scalar in the computation DAG.
 // The backward closure propagates gradient to children without heap-allocating
@@ -16,7 +19,10 @@ type Value struct {
 	grad     float64
 	backward func()
 	children [2]*Value
+	mark     uint32
 }
+
+var backwardStamp uint32
 
 // New creates a leaf Value (no parents).
 //
@@ -56,21 +62,45 @@ func Mul(a, b *Value) *Value {
 
 // Pow returns a^n (n constant).
 func Pow(a *Value, n float64) *Value {
-	out := &Value{data: math.Pow(a.data, n), children: [2]*Value{a, nil}}
+	if n == 0 {
+		return New(1)
+	}
+	if n == 1 {
+		return a
+	}
+	if n == 2 {
+		out := &Value{data: a.data * a.data, children: [2]*Value{a, nil}}
+		out.backward = func() {
+			a.grad += 2 * a.data * out.grad
+		}
+		return out
+	}
+	p := math.Pow(a.data, n)
+	dp := n * math.Pow(a.data, n-1)
+	out := &Value{data: p, children: [2]*Value{a, nil}}
 	out.backward = func() {
-		a.grad += n * math.Pow(a.data, n-1) * out.grad
+		a.grad += dp * out.grad
 	}
 	return out
 }
 
 // Neg returns -a.
 func Neg(a *Value) *Value {
-	return Mul(a, New(-1))
+	out := &Value{data: -a.data, children: [2]*Value{a, nil}}
+	out.backward = func() {
+		a.grad -= out.grad
+	}
+	return out
 }
 
 // Sub returns a - b.
 func Sub(a, b *Value) *Value {
-	return Add(a, Neg(b))
+	out := &Value{data: a.data - b.data, children: [2]*Value{a, b}}
+	out.backward = func() {
+		a.grad += out.grad
+		b.grad -= out.grad
+	}
+	return out
 }
 
 // Exp returns exp(a).
@@ -89,16 +119,16 @@ func Exp(a *Value) *Value {
 //go:norace
 func (v *Value) Backward() {
 	order := make([]*Value, 0, 32)
-	visited := make(map[*Value]struct{}, 32)
+	stamp := atomic.AddUint32(&backwardStamp, 1)
 	var topo func(*Value)
 	topo = func(n *Value) {
 		if n == nil {
 			return
 		}
-		if _, ok := visited[n]; ok {
+		if n.mark == stamp {
 			return
 		}
-		visited[n] = struct{}{}
+		n.mark = stamp
 		topo(n.children[0])
 		topo(n.children[1])
 		order = append(order, n)
@@ -120,14 +150,16 @@ func (v *Value) Backward() {
 func MinimizeRosenbrock(x0, y0, lr float64, steps int) (float64, float64) {
 	x := New(x0)
 	y := New(y0)
+	one := New(1)
+	hundred := New(100)
 	for range steps {
 		x.ZeroGrad()
 		y.ZeroGrad()
 		// f = (1-x)² + 100*(y-x²)²
-		oneMinusX := Sub(New(1), x)
+		oneMinusX := Sub(one, x)
 		xSq := Pow(x, 2)
 		yMinusXSq := Sub(y, xSq)
-		f := Add(Pow(oneMinusX, 2), Mul(New(100), Pow(yMinusXSq, 2)))
+		f := Add(Pow(oneMinusX, 2), Mul(hundred, Pow(yMinusXSq, 2)))
 		f.Backward()
 		x.data -= lr * x.grad
 		y.data -= lr * y.grad
