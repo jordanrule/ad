@@ -32,6 +32,24 @@ Same reverse idea, but instead of a flat tape you let the computation build a tr
 go run ./cmd/demo
 ```
 
+Run one section at a time when learning the code:
+
+```bash
+go run ./cmd/demo --section particle
+go run ./cmd/demo --section neural
+go run ./cmd/demo --section optim --steps 20000 --lr 0.0005
+go run ./cmd/demo --section all --quiet
+go run ./cmd/demo --section all --json
+```
+
+Flags:
+
+- `--section` : `all` (default), `particle`, `neural`, or `optim`
+- `--steps` : gradient-descent steps used by the `optim` demo (default `10000`)
+- `--lr` : learning rate used by the `optim` demo (default `0.001`)
+- `--quiet` : compact, one-line-per-section output for quick comparisons
+- `--json` : structured machine-readable output (pretty-printed JSON)
+
 ## License
 
 BSD 2-Clause
