@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">How This Repo Works</title>
+  <desc id="desc">The demo program runs three ways to compute gradients: dual numbers, tape backprop, and graph backprop.</desc>
+
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 16px Arial, sans-serif; fill: #334155; }
+      .h { font: 700 18px Arial, sans-serif; fill: #0f172a; }
+      .t { font: 400 14px Arial, sans-serif; fill: #1e293b; }
+      .code { font: 600 13px 'Courier New', monospace; fill: #0f172a; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; rx: 12; }
+      .entry { fill: #e2e8f0; stroke: #64748b; stroke-width: 2; rx: 12; }
+      .particle { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 12; }
+      .neural { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 2; rx: 12; }
+      .optim { fill: #ecfdf5; stroke: #16a34a; stroke-width: 2; rx: 12; }
+      .arrow { stroke: #475569; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+      .label { font: 600 12px Arial, sans-serif; fill: #475569; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+    </marker>
+  </defs>
+
+  <text x="40" y="54" class="title">How This Go Project Is Organized</text>
+  <text x="40" y="82" class="subtitle">One demo app, three gradient engines</text>
+
+  <rect x="390" y="120" width="420" height="150" class="entry" />
+  <text x="420" y="156" class="h">Start Here: cmd/demo</text>
+  <text x="420" y="184" class="code">read options -> run example -> print results</text>
+  <text x="420" y="210" class="t">Output styles: normal, quiet, or JSON</text>
+  <text x="420" y="234" class="t">Pick a section: particle, neural, optim, or all</text>
+
+  <line x1="600" y1="270" x2="220" y2="332" class="arrow" />
+  <line x1="600" y1="270" x2="600" y2="332" class="arrow" />
+  <line x1="600" y1="270" x2="980" y2="332" class="arrow" />
+
+  <text x="275" y="310" class="label">dual numbers</text>
+  <text x="620" y="313" class="label">tape backprop</text>
+  <text x="900" y="310" class="label">graph backprop</text>
+
+  <rect x="50" y="350" width="340" height="260" class="particle" />
+  <text x="76" y="386" class="h">Package: particle</text>
+  <text x="76" y="412" class="code">particle/dual.go</text>
+  <text x="76" y="438" class="t">Track value + slope at the same time</text>
+  <text x="76" y="462" class="t">Best for: few inputs, many outputs</text>
+  <text x="76" y="486" class="code">Dual, Add, Mul, Sin, Exp, Sqrt</text>
+  <text x="76" y="512" class="code">SimulateDetectorResponse(E)</text>
+  <text x="76" y="536" class="t">You get response and dResponse/dE together</text>
+
+  <rect x="430" y="350" width="340" height="260" class="neural" />
+  <text x="456" y="386" class="h">Package: neural</text>
+  <text x="456" y="412" class="code">neural/tape.go</text>
+  <text x="456" y="438" class="t">Record each math step on a tape</text>
+  <text x="456" y="462" class="t">Then walk backward to get gradients</text>
+  <text x="456" y="486" class="code">Tape, Add, Mul, Sigmoid, Backward</text>
+  <text x="456" y="512" class="code">ForwardSingleNeuron(...)</text>
+  <text x="456" y="536" class="t">Best for: many parameters, one loss value</text>
+
+  <rect x="810" y="350" width="340" height="260" class="optim" />
+  <text x="836" y="386" class="h">Package: optim</text>
+  <text x="836" y="412" class="code">optim/value.go</text>
+  <text x="836" y="438" class="t">Build a graph of values as you compute</text>
+  <text x="836" y="462" class="t">Walk it backward to collect gradients</text>
+  <text x="836" y="486" class="code">Value, Add, Mul, Pow, Backward</text>
+  <text x="836" y="512" class="code">MinimizeRosenbrock(x0, y0, lr, steps)</text>
+  <text x="836" y="536" class="t">Best for: flexible formulas and control flow</text>
+
+  <rect x="40" y="630" width="1120" height="34" class="box" />
+  <text x="60" y="652" class="subtitle">Quick rule: few inputs -> dual numbers; one output -> backprop; changing formulas -> graph backprop.</text>
+</svg>
+
